@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, BigInteger, ForeignKey
 from src.db.base_class import Base
 
 class TarjetaPropiedad(Base):
+    __tablename__ = "tarjetapropiedad"
     numero_tarjeta = Column(BigInteger, primary_key=True, index=True)
     nombre_propietario = Column(String(250), nullable=False)
     cilindraje = Column(Integer, nullable=False)
@@ -19,6 +20,6 @@ class TarjetaPropiedad(Base):
     placa = Column(String(6), nullable=False)
     
     #foraneas
-    fk_placavehiculo = Column(String(6), ForeignKey('vehiculo.placa'), nullable=False)
+    fk_placavehiculo = Column(String(6), ForeignKey('vehiculos.placa'), nullable=False)
     
     

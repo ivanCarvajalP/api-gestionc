@@ -3,6 +3,7 @@ from src.db.base_class import Base
 from sqlalchemy.sql import func
 
 class Usuario(Base):
+    __tablename__ = "usuarios"
     documento_identidad = Column(BigInteger, primary_key=True, index=True)
     nombres = Column(String(100), nullable=False)
     apellidos = Column(String(100), nullable=False)
