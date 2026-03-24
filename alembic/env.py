@@ -8,6 +8,10 @@ from src.db.base_class import Base
 
 #cargar los modelos
 from src.models.usuario import Usuario
+from src.models.vehiculo import Vehiculo
+from src.models.tarjeta_propiedad import TarjetaPropiedad
+from src.models.factura import Factura
+from src.models.servicio import Servicio
 
 load_dotenv()
 
