@@ -1,26 +1,28 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 from src.api.dependencies import get_db
-from src.crud import usuario as usuario_crud
+from src.services import usuario as usuario_service
 from src.schemas import usuario as usuario_schema
+
 
 router = APIRouter()
 
 
 @router.get('/', response_model=List[usuario_schema.UsuarioResponse])
 def obtener_usuarios(db: Session = Depends(get_db)):
-    return usuario_crud.obtener_usuarios(db)
+    return usuario_service.obtener_usuarios(db)
 
 
 @router.get('/{documento_identidad}', response_model=usuario_schema.UsuarioResponse)
 def obtener_usuario_por_documento(documento_identidad: int, db: Session = Depends(get_db)):
-    usuario = usuario_crud.obtener_usuario_por_documento(documento_identidad, db)
-    if not usuario:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return usuario
+    return usuario_service.obtener_usuario_por_documento(documento_identidad, db)
 
 
-@router.post('/registrar', response_model=usuario_schema.UsuarioResponse)
+@router.post('/', response_model=usuario_schema.UsuarioResponse)
 def crear_usuario(usuario: usuario_schema.UsuarioCreate, db: Session = Depends(get_db)):
-    return usuario_crud.crear_usuario(db, usuario)
+    return usuario_service.crear_usuario(db, usuario)
+
+@router.put('/{documento_identidad}', response_model=usuario_schema.UsuarioResponse)
+def actualizar_usuario(documento_identidad: int, usuario: usuario_schema.UsuarioUpdate, db: Session = Depends(get_db)):
+    return usuario_service.actualizar_usuario(documento_identidad, usuario, db)

@@ -12,10 +12,9 @@ class UsuarioBase(BaseModel):
 # DTO: Para crear un nuevo usuario (Se pide todo lo de 'UsuarioBase' más el documento que es la Primary Key)
 class UsuarioCreate(UsuarioBase):
     documento_identidad: int
-    rol: str
 
 # DTO: Para actualizar un usuario (Todos los campos son opcionales porque podrías querer actualizar solo uno)
-class UsuarioUpdate(BaseModel):
+class UsuarioUpdate(UsuarioBase):
     nombres: Optional[str] = None
     apellidos: Optional[str] = None
     correo: Optional[str] = None
@@ -30,4 +29,4 @@ class UsuarioResponse(UsuarioBase):
     model_config = ConfigDict(from_attributes=True)
 
 
-        
+    
