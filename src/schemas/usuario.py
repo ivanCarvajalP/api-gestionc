@@ -12,6 +12,21 @@ class UsuarioBase(BaseModel):
 # DTO: Para crear un nuevo usuario (Se pide todo lo de 'UsuarioBase' más el documento que es la Primary Key)
 class UsuarioCreate(UsuarioBase):
     documento_identidad: int
+    contrasena: str
+
+
+#para el login
+class UsuarioLogin(BaseModel):
+    documento_identidad: int
+    contrasena: str
+
+#para retornar en el login
+class UsuarioLoginResponse(BaseModel):
+    acces_token: str
+    token_type: str = "bearer"
+    nombres: str
+    correo: str
+    documento_identidad: int
 
 # DTO: Para actualizar un usuario (Todos los campos son opcionales porque podrías querer actualizar solo uno)
 class UsuarioUpdate(UsuarioBase):

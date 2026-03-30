@@ -19,10 +19,6 @@ def obtener_usuario_por_documento(documento_identidad: int, db: Session = Depend
     return usuario_service.obtener_usuario_por_documento(documento_identidad, db)
 
 
-@router.post('/', response_model=usuario_schema.UsuarioResponse)
-def crear_usuario(usuario: usuario_schema.UsuarioCreate, db: Session = Depends(get_db)):
-    return usuario_service.crear_usuario(db, usuario)
-
 @router.put('/{documento_identidad}', response_model=usuario_schema.UsuarioResponse)
 def actualizar_usuario(documento_identidad: int, usuario: usuario_schema.UsuarioUpdate, db: Session = Depends(get_db)):
     return usuario_service.actualizar_usuario(documento_identidad, usuario, db)
