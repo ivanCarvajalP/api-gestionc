@@ -21,10 +21,6 @@ def get_semantic_graph() -> Graph:
     return _graph
 
 def ejecutar_sparql(query: str):
-    """
-    Ejecuta una consulta SPARQL nativa sobre la ontología y retorna los resultados
-    en una lista de diccionarios.
-    """
     g = get_semantic_graph()
     resultados = g.query(query)
     

@@ -1,17 +1,16 @@
 from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
-from sqlalchemy.orm import Session
+import psycopg2
 from src.services.factura_service import save_factura
 from src.api.dependencies import get_db
 
 router = APIRouter()
 
 
-
 @router.post("/upload")
 async def register_factura(
     placa: str = Form(...),
     file: UploadFile = File(...),
-    db: Session = Depends(get_db)
+    db: psycopg2.extensions.connection = Depends(get_db)
 ):
     """
     Subir una factura en formato PDF. Extrae la información, 

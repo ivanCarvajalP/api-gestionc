@@ -17,12 +17,3 @@ app.include_router(factura.router, prefix='/api/facturas', tags=['Facturas'])
 
 # para iniciar el servidor
 # uvicorn src.main:app --reload
-
-# para hacer migraciones
-# alembic revision --autogenerate -m 'mesaje migracion'
-
-# para aplicar las migraciones
-# alembic upgrade head
-
-# para revertir las migraciones
-# alembic downgrade -1

@@ -1,7 +1,7 @@
 import re
 import os
 import tempfile
-from sqlalchemy.orm import Session
+
 from datetime import datetime
 from PyPDF2 import PdfReader
 from src.services.groq_service import valid_products
@@ -124,8 +124,10 @@ def get_products_from_pdf(pdf_path: str) -> list:
     return valid_list
 
 
+import psycopg2
+
 #guardar factura
-def save_factura(db: Session, file_bytes: bytes, filename: str, placa: str):
+def save_factura(db: psycopg2.extensions.connection, file_bytes: bytes, filename: str, placa: str):
     # Escribir a un archivo temporal para que get_all y PyPDF2 interactúen
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
         tmp.write(file_bytes)
