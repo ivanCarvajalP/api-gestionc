@@ -26,3 +26,15 @@ def actualizar_usuario(documento_identidad: int, usuario: usuario_schema.Usuario
 @router.get('/{documento_identidad}/vehiculos')
 def obtener_vehiculos_de_un_usuario(documento_identidad: int, db: psycopg2.extensions.connection = Depends(get_db)):
     return usuario_service.obtener_vehiculos_de_un_usuario(documento_identidad, db)
+
+
+from src.schemas import vehiculo as vehiculo_schema
+
+@router.post('/{documento_identidad}/vehiculos')
+def registrar_vehiculo_usuario(documento_identidad: int, registro: vehiculo_schema.RegistroVehiculoUsuario, db: psycopg2.extensions.connection = Depends(get_db)):
+    return usuario_service.registrar_vehiculo_usuario(documento_identidad, registro, db)
+
+@router.delete('/{documento_identidad}/vehiculos/{placa}')
+def eliminar_vehiculo_usuario(documento_identidad: int, placa: str, db: psycopg2.extensions.connection = Depends(get_db)):
+    """Elimina de forma lógica un vehículo asociado a un usuario"""
+    return usuario_service.eliminar_vehiculo_usuario(documento_identidad, placa, db)
