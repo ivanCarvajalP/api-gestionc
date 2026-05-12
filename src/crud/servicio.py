@@ -20,3 +20,17 @@ def insert_servicio(db: psycopg2.extensions.connection, servicio: ServicioCreate
         resultado = cursor.fetchone()
         db.commit()
         return resultado["id_servicio"] if resultado else None
+
+def find_by_factura(db: psycopg2.extensions.connection, id_factura: str):
+    """
+    Obtiene todos los servicios asociados a una factura.
+    """
+    query = """
+        SELECT id_servicio, nombre, costo, cantidad
+        FROM servicios 
+        WHERE fk_idfactura = %(id_factura)s
+    """
+    with db.cursor() as cursor:
+        cursor.execute(query, {"id_factura": id_factura})
+        resultados = cursor.fetchall()
+        return [dict(row) for row in resultados]

@@ -47,3 +47,19 @@ def find_by_cufe(db: psycopg2.extensions.connection, cufe: str):
     with db.cursor() as cursor:
         cursor.execute(query, (cufe,))
         return cursor.fetchone()
+
+def find_by_placa(db: psycopg2.extensions.connection, placa: str):
+    """
+    Obtiene todas las facturas asociadas a un vehículo por su placa.
+    """
+    query = """
+        SELECT id_factura, fecha_factura, nombre_empresa, costo_total, url_factura
+        FROM facturas 
+        WHERE fk_placavehiculo = %(placa)s
+        ORDER BY fecha_factura DESC
+    """
+    with db.cursor() as cursor:
+        cursor.execute(query, {"placa": placa})
+        resultados = cursor.fetchall()
+        return [dict(row) for row in resultados]
+
