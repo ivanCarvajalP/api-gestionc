@@ -28,3 +28,20 @@ def insert_tarjeta_propiedad(db: psycopg2.extensions.connection, tarjeta: Tarjet
     with db.cursor() as cursor:
         cursor.execute(query, data)
         return True
+
+def find_by_placa(db: psycopg2.extensions.connection, placa: str):
+    """
+    Obtiene la tarjeta de propiedad de un vehículo por su placa.
+    """
+    query = """
+        SELECT numero_tarjeta, nombre_propietario, cilindraje, documento_propietario,
+               marca, clase_vehiculo, modelo, capacidad, servicio, tipo_carroceria,
+               linea_vehiculo, numero_motor, combustible, color, placa
+        FROM tarjetapropiedad
+        WHERE fk_placavehiculo = %(placa)s
+    """
+    with db.cursor() as cursor:
+        cursor.execute(query, {"placa": placa})
+        resultado = cursor.fetchone()
+        return dict(resultado) if resultado else None
+

@@ -12,7 +12,7 @@ app = FastAPI(
 # Configuración CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"], #dominio de la web que va a consumir la api
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

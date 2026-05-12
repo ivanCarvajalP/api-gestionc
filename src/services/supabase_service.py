@@ -23,3 +23,24 @@ def upload_factura_pdf(file_bytes: bytes, filename: str) -> str:
     )
     
     return supabase.storage.from_(settings.SUPABASE_BUCKET).get_public_url(file_path)
+
+def delete_factura_pdf(url_factura: str):
+    """
+    Elimina un archivo PDF del Storage de Supabase a partir de su URL pública.
+    Extrae el path relativo desde la URL.
+    """
+    # Extraer el path del archivo desde la URL pública
+    # URL formato: https://xxx.supabase.co/storage/v1/object/public/bucket/facturas/archivo.pdf
+    try:
+        bucket_name = settings.SUPABASE_BUCKET
+        # Buscar el path después del nombre del bucket en la URL
+        idx = url_factura.find(f"{bucket_name}/")
+        if idx == -1:
+            return False
+        file_path = url_factura[idx + len(bucket_name) + 1:]
+        supabase.storage.from_(bucket_name).remove([file_path])
+        return True
+    except Exception as e:
+        print(f"Error al eliminar PDF de Supabase: {e}")
+        return False
+

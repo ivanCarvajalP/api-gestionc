@@ -9,13 +9,6 @@ from src.schemas import usuario as usuario_schema
 router = APIRouter()
 
 
-@router.get('/', response_model=List[usuario_schema.UsuarioResponse])
-def obtener_usuarios(
-    db: psycopg2.extensions.connection = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
-):
-    return usuario_service.obtener_usuarios(db)
-
 
 @router.get('/{documento_identidad}', response_model=usuario_schema.UsuarioResponse)
 def obtener_usuario_por_documento(

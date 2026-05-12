@@ -63,3 +63,37 @@ def find_by_placa(db: psycopg2.extensions.connection, placa: str):
         resultados = cursor.fetchall()
         return [dict(row) for row in resultados]
 
+def find_by_usuario(db: psycopg2.extensions.connection, documento: int):
+    """
+    Obtiene todas las facturas de todos los vehículos activos de un usuario.
+    """
+    query = """
+        SELECT f.id_factura, f.fecha_factura, f.nombre_empresa, 
+               f.costo_total, f.url_factura, f.fk_placavehiculo AS placa
+        FROM facturas f
+        INNER JOIN usuario_vehiculo uv ON f.fk_placavehiculo = uv.pfk_vehiculo
+        WHERE uv.pfk_usuario = %(documento)s
+        ORDER BY f.fecha_factura DESC
+    """
+    with db.cursor() as cursor:
+        cursor.execute(query, {"documento": documento})
+        resultados = cursor.fetchall()
+        return [dict(row) for row in resultados]
+
+def delete_servicios_by_factura(db: psycopg2.extensions.connection, id_factura: str):
+    """
+    Elimina todos los servicios asociados a una factura.
+    """
+    query = "DELETE FROM servicios WHERE fk_idfactura = %(id_factura)s"
+    with db.cursor() as cursor:
+        cursor.execute(query, {"id_factura": id_factura})
+
+def delete_factura(db: psycopg2.extensions.connection, id_factura: str):
+    """
+    Elimina una factura de la base de datos.
+    Debe llamarse después de eliminar los servicios asociados.
+    """
+    query = "DELETE FROM facturas WHERE id_factura = %(id_factura)s"
+    with db.cursor() as cursor:
+        cursor.execute(query, {"id_factura": id_factura})
+
