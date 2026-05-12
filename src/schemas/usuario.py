@@ -27,7 +27,7 @@ class UsuarioLogin(BaseModel):
 
 #para retornar en el login
 class UsuarioLoginResponse(BaseModel):
-    acces_token: str
+    access_token: str
     token_type: str = "bearer"
     nombres: str
     correo: str

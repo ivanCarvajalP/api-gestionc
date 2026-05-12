@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from typing import List, Dict, Any
 from src.db.semantic import ejecutar_sparql
+from src.api.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -15,7 +16,7 @@ Obtiene una lista de todos los usuarios registrados en la ontología
 junto con la placa del vehículo que poseen.
 """
 @router.get("/usuarios-vehiculos", response_model=List[Dict[str, Any]])
-def obtener_usuarios_y_sus_vehiculos():
+def obtener_usuarios_y_sus_vehiculos(current_user: dict = Depends(get_current_user)):
     query = f"""
         {SPARQL_PREFIXES}
         SELECT ?nombreUsuario ?documento ?placa
@@ -36,7 +37,7 @@ Busca por el documento de identidad y muestra las placas de los vehículos que p
 TRUCO: Comparamos convirtiendo a string puro, para evadir el tipado fuerte de Protegé (^^xsd:string)
 """
 @router.get("/usuarios/{documento_identidad}/vehiculos", response_model=List[Dict[str, Any]])
-def obtener_vehiculo_por_documento_usuario(documento_identidad: str):
+def obtener_vehiculo_por_documento_usuario(documento_identidad: str, current_user: dict = Depends(get_current_user)):
     query = f"""
         {SPARQL_PREFIXES}
         SELECT ?nombreUsuario ?placa
@@ -59,7 +60,7 @@ def obtener_vehiculo_por_documento_usuario(documento_identidad: str):
 Obtiene al dueño, la placa del vehículo y el ID de la factura generada.
 """
 @router.get("/facturas-vehiculos", response_model=List[Dict[str, Any]])
-def obtener_facturas_y_sus_vehiculos():
+def obtener_facturas_y_sus_vehiculos(current_user: dict = Depends(get_current_user)):
     query = f"""
         {SPARQL_PREFIXES}
         SELECT ?nombreDuenio ?placa ?idFactura
@@ -84,7 +85,7 @@ def obtener_facturas_y_sus_vehiculos():
 Obtiene todos los servicios (descripciones de factura) realizados a un vehículo específico buscando por su placa.
 """
 @router.get("/vehiculos/{placa}/servicios", response_model=List[Dict[str, Any]])
-def obtener_servicios_por_placa(placa: str):
+def obtener_servicios_por_placa(placa: str, current_user: dict = Depends(get_current_user)):
     query = f"""
         {SPARQL_PREFIXES}
         SELECT ?idFactura ?descripcionServicio

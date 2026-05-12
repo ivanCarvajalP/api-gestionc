@@ -28,7 +28,8 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: psycopg2.extension
         documento_identidad: str = payload.get("sub")
         if documento_identidad is None:
             raise credentials_exception
-    except JWTError:
+    except JWTError as e:
+        print(f"JWT Error encountered: {str(e)}")
         raise credentials_exception
     
     usuario = usuario_service.obtener_usuario_por_documento(int(documento_identidad), db)
